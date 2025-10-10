@@ -1,7 +1,10 @@
 package com.kader.users.service;
 
+import java.util.List;
+
 import com.kader.users.entities.Role;
 import com.kader.users.entities.User;
+import com.kader.users.service.register.RegistrationRequest;
 
 public interface UserService {
 	 User saveUser(User user); 
@@ -9,5 +12,7 @@ public interface UserService {
 	 Role addRole(Role role); 
 	 User addRoleToUser(String username, String rolename);
 
-	 List<User> findAllUsers();
+	 //List<User> findAllUsers();
+	 
+	 User registerUser(RegistrationRequest request);
 }
