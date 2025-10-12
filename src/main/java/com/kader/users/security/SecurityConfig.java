@@ -17,28 +17,28 @@ import jakarta.servlet.http.HttpServletRequest;
 @Configuration
 public class SecurityConfig {
 
-	@Autowired 
+	@Autowired
 	AuthenticationManager authMgr; 
 	
 	 @Bean 
 	 public SecurityFilterChain filterChain(HttpSecurity http) throws 
 	Exception {  
 	       
-	       http.sessionManagement(session -> 
-	session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+	       http.sessionManagement(session ->
+	session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	       
-	    .csrf(csrf -> csrf.disable()) 
+	    .csrf(csrf -> csrf.disable())
 	       .cors(cors -> cors.configurationSource(new CorsConfigurationSource() 
 	         { 
 	                  @Override 
 	                  public CorsConfiguration getCorsConfiguration(HttpServletRequest 
-	      request) { 
-	                      CorsConfiguration cors = new CorsConfiguration(); 
+	      request) {
+	                      CorsConfiguration cors = new CorsConfiguration();
 	                    
 	      cors.setAllowedOrigins(Collections.singletonList("http://localhost:4200")); 
 	      cors.setAllowedMethods(Collections.singletonList("*")); 
 	      cors.setAllowedHeaders(Collections.singletonList("*")); 
-	      cors.setExposedHeaders(Collections.singletonList("Authorization")); 
+	      cors.setExposedHeaders(Collections.singletonList("Authorization"));
 	                      return cors; 
 	                  } 
 	              }))
@@ -58,7 +58,5 @@ public class SecurityConfig {
 		 return http.build();
 
 	 } 
-	  
-	  
-	
+
 }

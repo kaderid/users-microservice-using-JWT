@@ -18,10 +18,13 @@ import com.kader.users.service.register.RegistrationRequest;
 public class UserServiceImpl  implements UserService{ 
  
  @Autowired 
- UserRepository userRep; 
+ UserRepository userRep;
   
  @Autowired 
- RoleRepository roleRep; 
+ RoleRepository roleRep;
+
+    Autowired
+ VerificationTokenRepository verificationTokenRepo;
   
   
  @Autowired 
@@ -76,10 +79,25 @@ public class UserServiceImpl  implements UserService{
 		        Role r = roleRep.findByRole("USER"); 
 		        List<Role> roles = new ArrayList<>(); 
 		        roles.add(r); 
-		        newUser.setRoles(roles); 
-		       
-		        return userRep.save(newUser); 
+		        newUser.setRoles(roles);
+                userRep.save(newUser);
+
+     //génére le code secret
+     String code = this.generateCode();
+
+     VerificationToken token = new VerificationToken(code, newUser);
+     verificationTokenRepo.save(token);
+
+     return newUser;
 		 
  }
- 
+
+    public String generateCode() {
+        Random random = new Random();
+        Integer code = 100000 + random.nextInt(900000);
+
+        return code.toString();
+    }
+
+
 }
