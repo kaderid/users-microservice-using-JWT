@@ -28,7 +28,10 @@ public class UserServiceImpl  implements UserService{
   
   
  @Autowired 
- BCryptPasswordEncoder bCryptPasswordEncoder; 
+ BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    EmailSender emailSender;
   
  @Override 
  public User saveUser(User user) { 
@@ -88,7 +91,11 @@ public class UserServiceImpl  implements UserService{
      VerificationToken token = new VerificationToken(code, newUser);
      verificationTokenRepo.save(token);
 
-     return newUser;
+     //envoyer par email pour valider l'email de l'utilisateur
+     sendEmailUser(newUser,token.getToken());
+
+
+     return userRep.save(newUser);
 		 
  }
 
@@ -99,5 +106,12 @@ public class UserServiceImpl  implements UserService{
         return code.toString();
     }
 
+
+    @Override
+    public void sendEmailUser(User u, String code) {
+        String emailBody ="Bonjour "+ "<h1>"+u.getUsername() +"</h1>" +
+                " Votre code de validation est "+"<h1>"+code+"</h1>";
+        emailSender.sendEmail(u.getEmail(), emailBody);
+    }
 
 }
